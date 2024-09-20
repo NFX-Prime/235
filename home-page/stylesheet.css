@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+h1{
+    color: #AED2FF;
+    font-family: "Ubuntu", Arial, Helvetica, sans-serif;
+    font-size: 3.5em;
+    text-align: center;
+}
+
+h2{
+    color: #AED2FF;
+    font-family: "Schibsted Grotesk", Arial, Helvetica, sans-serif;
+    font-size: 2em;
+    margin-left: .6em;
+}
+
+p.descriptions{
+    color: #E4F1FF;
+    font-family: "Sora", Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    margin-left: 1em;
+    background: #9400FF;
+    width: 1200px;
+    padding: 15px;
+    border: 3px solid white;
+    word-spacing: 2px;
+}
+
+ul.bulletlist {
+    color: #E4F1FF;
+    font-family: "Sora", Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    word-spacing: 2px;
+}
+
+#Github{
+    color: #E4F1FF;
+    font-family: "Sora", Arial, Helvetica, sans-serif;
+    font-weight: 5px;
+    font-size:1.2em;
+    margin-left: 1em;
+}
+
+li{
+    margin-left: 1.15em;
+}
+
+a:link{
+    color:#AED2FF;   
+}
+a:visited{
+    color:#9400FF;
+}
+a:focus{
+    color:#AED2FF;
+    background-color: #9400FF;
+}
+a:hover{
+    color:white;
+}
+a:active{
+    color:black;
+}
+
+#Filiberto{
+    float:right;
+    width: 530px;
+    height:530px;
+    margin-right:1.2em;
+}
+
+body{background-color: #27005D;}

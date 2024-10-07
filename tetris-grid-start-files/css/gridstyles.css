@@ -1,2 +1,40 @@
 /* It starts completely empty. I wish you luck. */
+#wrapper{
+    display: grid;
+    grid-template-areas:
+    "logo" 
+    "menu" 
+    "intro" 
+    "playground" 
+    "footer";
+
+    grid-template-areas:
+    "logo       intro"
+    "menu       menu"
+    "playground playground"
+    "footer     footer";
+
+    @media screen and (min-width: 850px)
+    {
+        grid-template-columns: 345px;
+        grid-template-rows: 500px;
+    }
+
+}
+
+h1.game { grid-area: logo; }
+ul.menu { grid-area: menu; }
+#introduction { grid-area: intro;}
+
+#tetgrid { grid-area: playground; }
+footer { grid-area: footer; }
+
+h1.game{
+    width: 500px;
+    height: 345px;
+    background: url(../images/tetris-logo.png) no-repeat;
+    text-indent: -999999999px;
+  }
+section{
+    margin: 2rem; }
 

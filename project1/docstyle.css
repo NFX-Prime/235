@@ -1,0 +1,35 @@
+h1{
+    display:flex;
+    justify-content:center;
+    font-size:5em;
+    font-family:"Updock", 'Times New Roman', Times, serif;
+}
+body{
+    background-color: #FFC8DD;
+}
+
+#screenshots{
+    display:flex;
+    justify-content:space-around;
+}
+#content{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    background-color:#FFC8DD;
+
+}
+#links{
+    display: flex;
+    justify-content: space-around;
+}
+img{
+    border: 5px solid gray;
+}
+p{
+    background-color:#FFAFCC;
+    padding:20px;
+    color:dimgray;
+    font-size:1.5em;
+    font-family:"Sora", 'Times New Roman', Times, serif;
+}

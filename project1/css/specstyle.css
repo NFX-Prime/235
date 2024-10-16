@@ -1,26 +1,26 @@
 
 #container{
     display: flex;
-    align-items: flex-start; 
+    flex-direction: row;
     flex-wrap: wrap;
     margin-left: 50px;
-    height: 1200;
     width: 95vw;
-    height: 1500px;
 }
 #intro{
     width: 400px;
-    border-bottom: 2px dashed grey;
     height: 1170px;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 #content{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: wrap;    
     align-items: flex-start;
     width: 920px;
-    border-bottom: 2px dashed grey;
-    height: 1170px;
 }
 #border{
     float: left;
@@ -29,6 +29,7 @@
 .image{
     float:right;
     margin-left: 30px;
+    margin-right: 20px;
 }
 #lettering{
     float:left;
@@ -40,34 +41,56 @@ h2{
 }
 p{
     font-size: 1.3em;
-    margin:30px;
-    text-indent: 5px;
+    margin-left: 30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+#topP{
+    margin-top: 50px;
 }
 #symbol{
     float: right;
     margin-right: 90px;
-    padding: 100px;
+    padding: 90px;
 }
 span{
-    width:450px;
+    width: 400px;
     float:right;
     font-size: .75em;
     font-weight: bold;
+    margin-right: 30px;
+    font-family: "Roboto Condensed", 'Times New Roman', Times, serif;
+
 }
 footer{
     width:800px;
 }
 blockquote{
-    font-size: 2em;
+    font-size: 1.45em;
+    padding: 20px 0px;
+    font-weight:bold;
+    font-family: "Noto Sans", Verdana, Geneva, Tahoma, sans-serif;
+
 }
-#quote{
+footer{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    width:1310px;
 }
 #quotation{
     width: 800px;
     line-height: 50px;
+    height:150px;
     border-bottom: 2px dashed grey;
+    border-top: 2px dashed grey
+}
+#conclusion{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.indent{
+    text-indent: 15px;
 }
 

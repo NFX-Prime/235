@@ -16,7 +16,6 @@
 }
 #intro{
     width: 400px;
-    height: 1170px;
 }
 main{
     display: flex;
@@ -67,9 +66,9 @@ p{
     padding-bottom: 10px;
 }
 span{
-    width: 390px;
+    width: 370px;
     float:right;
-    font-size: .9em;
+    font-size: .89em;
     margin-right: 30px;
     font-family: 'VCR OSD Mono',"Roboto Condensed", 'Times New Roman', Times, serif;
     color: yellow;
@@ -90,19 +89,25 @@ footer{
     width:1310px;
 }
 #quotation{
-    width: 800px;
     line-height: 50px;
-    height:150px;
     border-bottom: 2px dashed grey;
     border-top: 2px dashed grey
 }
 #conclusion{
     display:flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
 }
-.indent{
-    text-indent: 15px;
+ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-family: 'VCR OSD Mono', "Noto Sans", Verdana, Geneva, Tahoma, sans-serif;
+    color: RGB(66, 179, 201);
+    background-color: RGB(74, 17, 10);
+    margin-left:30px;
+    padding: 10px 20px;
+    list-style: none;
 }
 body{
     background-color: black;
@@ -112,6 +117,31 @@ strong{
 }
 em{
     color: yellow;
+}
+#enemies{
+    float:right;
+}
+@media screen and (min-width="700px"){
+}
+a:link{
+    color:RGB(66, 179, 201)
+}
+a:visited{
+    color:red;
+}
+
+a:hover{
+    color: yellow;
+}
+a:focus{
+    color:orange;
+}
+a:active{
+    color:white;
+}
+article{
+    color:whitesmoke;
+    float:right;
 }
 
 

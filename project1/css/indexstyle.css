@@ -34,8 +34,6 @@ main{
 }
 #gameplay{
     float: right;
-    width: 500;
-    height: 550;
 }
 .image{
     float:right;
@@ -129,9 +127,6 @@ em{
     margin-left: auto;
     margin-right: auto;
 }
-@media screen and (min-width: 700px){
-
-}
 a:link{
     color:RGB(66, 179, 201)
 }
@@ -159,9 +154,6 @@ nav{
 }
 #notes{
     text-align: center;
-}
-#Final{
-    height: 600px;
 }
 
 

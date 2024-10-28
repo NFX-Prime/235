@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 100vw;
+    width: 98vw;
     justify-content: center;
 }
 #intro{
@@ -22,6 +22,9 @@ main{
     flex-direction: column;
     flex-wrap: wrap;
 }
+#border{
+    float: left;
+}
 #content{
     display: flex;
     flex-direction: row;
@@ -29,10 +32,11 @@ main{
     align-items: flex-start;
     width: 920px;
 }
-#border{
-    float: left;
+#gameplay{
+    float: right;
+    width: 500;
+    height: 550;
 }
-
 .image{
     float:right;
     margin-left: 30px;
@@ -46,7 +50,7 @@ h2{
     text-indent: 50px;
     font-size: 2.75em;
     font-family: "Updock", 'Times New Roman', Times, serif;
-    color:red;
+    color:orange;
 }
 p{
     font-family: 'VCR OSD Mono', monospace;
@@ -59,9 +63,8 @@ p{
 #topP{
     margin-top: 50px;
 }
-#symbol{
+#enemies{
     float: right;
-    margin-right: 30px;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -86,7 +89,8 @@ footer{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width:1310px;
+    margin-right: 100px;
+    margin-left: 100px;
 }
 #quotation{
     line-height: 50px;
@@ -97,6 +101,7 @@ footer{
     display:flex;
     flex-direction: row;
     justify-content: space-around;
+    text-align: center;
 }
 ul{
     display: flex;
@@ -108,6 +113,7 @@ ul{
     margin-left:30px;
     padding: 10px 20px;
     list-style: none;
+    border:2px solid orange;
 }
 body{
     background-color: black;
@@ -118,10 +124,13 @@ strong{
 em{
     color: yellow;
 }
-#enemies{
-    float:right;
+#illustration{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
-@media screen and (min-width="700px"){
+@media screen and (min-width: 700px){
+
 }
 a:link{
     color:RGB(66, 179, 201)
@@ -142,6 +151,17 @@ a:active{
 article{
     color:whitesmoke;
     float:right;
+}
+nav{
+    position:fixed;
+    top: 0;
+    width: 400px;
+}
+#notes{
+    text-align: center;
+}
+#Final{
+    height: 600px;
 }
 
 

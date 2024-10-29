@@ -25,12 +25,87 @@ main{
 #border{
     float: left;
 }
+@media screen and (min-width: 1024px){
+    #content{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;    
+        align-items: flex-start;
+        width: 920px;
+    }
+    #gameplay{
+        float: right;
+        width: 650px;
+        height: 650px;
+    }
+}
+@media screen and (min-width:600px) and (max-width:1024px){
+    #container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 98vw;
+        justify-content: center;
+    }
+    #content{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;    
+        align-items: flex-start;
+        width: 580px;
+    }
+    #gameplay{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width:300px;
+        height:300px;
+        order: 1
+    }
+    #topP{
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    span{
+        order:1;
+        text-align: center;
+        float:right;
+        font-size: .89em;
+        margin-right: 30px;
+        font-family: 'VCR OSD Mono',"Roboto Condensed", 'Times New Roman', Times, serif;
+        color: yellow;
+    }
+
+}
+@media screen  and (min-width:400px) and (max-width:600px){
+    #topP{
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    span{
+        order:1;
+        text-align: center;
+        float:right;
+        font-size: .89em;
+        margin-right: 30px;
+        font-family: 'VCR OSD Mono',"Roboto Condensed", 'Times New Roman', Times, serif;
+        color: yellow;
+    }
+
+    #gameplay{
+        order: 1
+    }
+}
+#topP{
+    margin-top: 50px;
+}
 #content{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;    
-    align-items: flex-start;
-    width: 920px;
+    display: block;
 }
 #gameplay{
     float: right;
@@ -58,9 +133,7 @@ p{
     margin-bottom: 0px;
     color: whitesmoke;
 }
-#topP{
-    margin-top: 50px;
-}
+
 #enemies{
     float: right;
     padding-top: 10px;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minos Prime Quotes</title>
+    <style>
+        @import url(styles/stylesheet.css);
+    </style>
+</head>
+<body>
+    <header>MINOS PRIME QUOTES</header>
+    <h2>Made by Filiberto Nieves IV - IGME235.04</h2>
+    <div class="container">
+        <img src="images/minos-prime.png" alt="Minos Prime" width="65%">
+        <div id="centered">DIE</div>
+      </div>
+      <br><br>
+      <button id="button">PRESS FOR NEW QUOTE</button>
+<br><br><br><br>
+
+
+</body>
+<script>
+    let quotes = ["Ahh.. Free at last.", "JUDGEMENT", 
+        "Forgive me, my children, for I have failed to bring you salvation from this cold, dark world...",
+        "And thy punishment… is DEATH!", "Creature of steel… My gratitude upon thee for my freedom, but the crimes thy kind have committed against humanity are NOT forgotten."];
+    let text = document.getElementById("centered");
+    let button = document.getElementById("button");
+    window.onload = displayQuote;
+    function displayQuote(){
+        text.innerHTML = quotes[Math.floor(Math.random()*quotes.length)];
+    }
+    button.addEventListener("click", displayQuote);
+</script>
+</html>

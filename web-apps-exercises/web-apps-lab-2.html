@@ -22,6 +22,31 @@
   
   // add your own code here.
 
+	let h1 = document.querySelector("h1");
+	let h2 = document.querySelectorAll("h2");
+	let body = document.querySelector("body");
+	let p1 = document.querySelectorAll("p");
+	let footer = document.querySelector("footer");
+
+	h1.innerHTML = "My UFO Page";
+	h2[0].innerHTML = "My UFO Info";
+	h2[1].innerHTML = "My UFO Pictures";
+	h2[2].innerHTML = "";
+
+	body.style.fontFamily = "sans-serif";
+	body.style.color = "#c53b1d";
+
+	p1[0].innerHTML = "Report your UFO sightings here: <a href=http://www.nuforc.org> http://www.nuforc.org</a>";
+	p1[0].style.color = "green";
+	p1[0].style.fontWeight = "bold";
+	p1[0].style.fontSize = "2em";
+	p1[0].style.textTransform = "uppercase";
+	p1[0].style.textShadow = "3px 2px #A44";
+
+	p1[1].innerHTML = "";
+	p1[2].innerHTML = "<img src='ufo.png' alt='ufo'>";
+	footer.innerHTML = "&copy; 2024 Filiberto Nieves IV";
+	
 	</script>
 </body>
 </html>

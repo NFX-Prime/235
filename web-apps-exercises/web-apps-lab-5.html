@@ -41,12 +41,26 @@
 /* Write your code here! */
 let inputs = document.querySelectorAll("[name ^= colorGroup]");
 let select = document.getElementById("info");
+let legend = document.querySelector("legend");
+let button = document.getElementById("colorButton");
 
-function selected(){
-    select.innerHTML ='You have selected{e.target.value}';
+let selected = e => {
+    select.innerHTML ="You have selected " + e.target.value;
 }
 
-console.log(inputs);
+for(let i =0; i<inputs.length; i++){
+	inputs[i].addEventListener("change", selected);
+}
+
+let finalSelect = e =>{
+	const color = document.querySelector("input[name='colorGroup']:checked");
+
+	if (color){
+		select.textContent = "Your FINAL CHOICE is " + color.value;
+		legend.style.color = color.value;
+	}
+}
+colorButton.addEventListener("click", finalSelect);
 </script>
 </body>
 </html>

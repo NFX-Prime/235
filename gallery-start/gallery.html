@@ -87,15 +87,14 @@
 	*/
 	let span = document.querySelectorAll("span");
 	let img = document.getElementById("placeholder");
-	console.log(img.getAttribute('src'));
-	console.log(span);
 
-	let changeImage = (e) => { img.setAttribute('src', e.target.dataset.image)}
+	let changeImage = (e) => { img.setAttribute('src', e.target.dataset.image);
+		img.setAttribute('alt', e.target.dataset.title);
+	}
 
 	for(let i = 0; i < span.length; i++ ){
 		span[i].addEventListener("click", changeImage);
 	}
-
 	</script>
 	   
 </body>

@@ -163,7 +163,7 @@
             bigString+= line;
         }
 
-        document.querySelector("#content").innerHTML = obj;
+        document.querySelector("#content").innerHTML = xhr.responseText;
 
         document.querySelector("#status").innerHTML = "<b>Success</b>";
     }

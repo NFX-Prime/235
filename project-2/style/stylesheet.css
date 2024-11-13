@@ -1,0 +1,44 @@
+*{
+    font-family:verdana,tahoma,sans-serif;
+}
+#results{
+    text-align: center;
+    background-color: #0077B6;
+    padding: 50px;
+    margin-right: 200px;
+    margin-left:200px;
+}
+#search{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+body{
+    text-align: center;
+    background-color: #03045E;
+}
+h1{
+    font-size: 3em;
+    color: aqua;
+}
+p{
+    color: #CAF0F8;
+}
+button{
+    background-color: #90E0EF;
+    color: #0077B6;
+    padding: 30px;
+}
+select{
+    background-color: #90E0EF;
+    color: #0077B6;
+}
+.widgets{
+    color: #00B4D8;
+}
+main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

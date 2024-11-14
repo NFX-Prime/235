@@ -8,9 +8,15 @@
  function searchButtonClicked(){
      console.log("searchButtonClicked() called");
      
- const GIPHY_URL = "https://free-to-play-games-database.p.rapidapi.com/api/games";
+ const GIPHY_URL = "https://free-to-play-games-database.p.rapidapi.com/api/games?";
 
  let url = GIPHY_URL;
+ let platform = document.querySelector("#platform").value;
+ console.log(platform);
+ if(platform != "all"){
+    url += "platform="+platform;
+    console.log(url);
+ }
 
  let limit = document.querySelector("#limit").value;
 
@@ -29,7 +35,7 @@
  }
  });
 
- xhr.open('GET', 'https://free-to-play-games-database.p.rapidapi.com/api/games');
+ xhr.open('GET', `${url}`);
  xhr.setRequestHeader('x-rapidapi-key', '6cef503bd3msh28ac9b0fe25f174p18dc9djsn44f478740c5f');
  xhr.setRequestHeader('x-rapidapi-host', 'free-to-play-games-database.p.rapidapi.com');
 

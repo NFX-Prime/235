@@ -14,6 +14,7 @@
 #results{
     display:flex;
     flex-flow: row wrap;
+    justify-content: center;
     gap: 10px;
     text-align: center;
     background-color: #0077B6;
@@ -38,6 +39,7 @@ h1{
 }
 p{
     color: #CAF0F8;
+    font-size:1em;
 }
 button{
     background-color: #90E0EF;
@@ -56,6 +58,6 @@ main{
     flex-direction: row;
     justify-content: space-around;
 }
-img{
-    text-shadow: 10;
+.result{
+    width: 30%;
 }

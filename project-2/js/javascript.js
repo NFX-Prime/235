@@ -6,16 +6,19 @@
  
  // 3
  function searchButtonClicked(){
-     console.log("searchButtonClicked() called");
      
  const GIPHY_URL = "https://free-to-play-games-database.p.rapidapi.com/api/games?";
 
  let url = GIPHY_URL;
- let platform = document.querySelector("#platform").value;
- console.log(platform);
+ let platform = document.querySelector("#platform").value.trim();
+ let sort = document.querySelector("#sort").value.trim();
+
  if(platform != "all"){
-    url += "platform="+platform;
-    console.log(url);
+    url += "&platform="+platform;
+    console.log(url)
+ }
+ if(sort != "all"){
+    url += "&sort-by="+sort
  }
 
  let limit = document.querySelector("#limit").value;
@@ -31,7 +34,6 @@
 
  xhr.addEventListener('readystatechange', function () {
  if (this.readyState === this.DONE) {
-     console.log(this.responseText);
  }
  });
 

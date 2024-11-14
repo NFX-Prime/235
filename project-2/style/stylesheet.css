@@ -59,5 +59,7 @@ main{
     justify-content: space-around;
 }
 .result{
-    width: 30%;
+    display: flex;
+    flex-flow: column wrap;
+    width: 40%;
 }

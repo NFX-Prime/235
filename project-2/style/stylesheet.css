@@ -2,11 +2,15 @@
     font-family:verdana,tahoma,sans-serif;
 }
 #results{
+    display:flex;
+    flex-flow: row wrap;
+    gap: 10px;
     text-align: center;
     background-color: #0077B6;
     padding: 50px;
     margin-right: 200px;
     margin-left:200px;
+
 }
 #search{
     display: flex;
@@ -41,4 +45,7 @@ main{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+}
+img{
+    text-shadow: 10;
 }

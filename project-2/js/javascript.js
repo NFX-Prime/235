@@ -13,7 +13,6 @@
  let url = GIPHY_URL;
 
  let limit = document.querySelector("#limit").value;
- limit = parseInt(limit);
 
  getData(url);
  }
@@ -51,7 +50,8 @@
         results.push(obj[i]);
      }
 
-     let bigString = "<p><i>Here are " + results.length + " results";
+     document.querySelector("#numresults").innerHTML = `Here are ${limit.value} results!`;
+     let bigString = "";
      
      for(let i=0; i<results.length; i++){
          let result = results[i];
@@ -61,13 +61,13 @@
 
          let url = result.url;
 
-         let line = `<div class='result'><img src='${smallURL}' title='${result.id}' />`;
+         let line = `<div class='result'><img src='${smallURL}' title='${result.id}'/>`;
          line += `<p>Title: ${result.title}<br><a target='_blank' href='${result.game_url}'>View Game Page</a></p></div>`;
 
          bigString+= line;
      }
 
-     document.querySelector("p").innerHTML = bigString;
+     document.querySelector("#results").innerHTML = bigString;
  }
 
  function dataError(e){

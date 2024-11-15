@@ -51,6 +51,7 @@
      let xhr = e.target;
 
      let obj =JSON.parse(xhr.responseText);
+     console.log(obj);
 
      let results= [];
 
@@ -69,13 +70,23 @@
 
          let url = result.url;
 
-         let line = `<div class='result'><img src='${smallURL}' title='${result.id}'/>`;
+         let line = `<div class='result'><img src='${smallURL}' title='${result.title}'/>`;
          line += `<p>Title: ${result.title}<br><a target='_blank' href='${result.game_url}'>View Game Page</a></p></div>`;
 
          bigString+= line;
      }
 
      document.querySelector("#results").innerHTML = bigString;
+     let listResults = document.querySelectorAll(".result");
+     console.log(listResults);
+     for (let result of listResults) {
+        result.addEventListener("click", displayInfo);
+     }
+ }
+
+ function displayInfo(e){
+    document.querySelector("#results").innerHTML = `<p>Here is more info for: ${e.target.title}</p>
+    <img src='${e.target.src}' alt='guhhh' width="60%">`
  }
 
  function dataError(e){

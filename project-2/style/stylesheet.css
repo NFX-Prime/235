@@ -63,3 +63,6 @@ main{
     flex-flow: column wrap;
     width: 40%;
 }
+a:link{
+    color: white;
+}

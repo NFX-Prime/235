@@ -21,6 +21,7 @@
     padding: 50px;
     margin-right: 200px;
     margin-left:200px;
+    
 
 }
 #search{
@@ -65,4 +66,20 @@ main{
 }
 a:link{
     color: white;
+}
+a:hover{
+    background-color: #03045E;
+}
+.resultButton{
+    background-color: #03045E;
+    color: white;
+    padding: 10px;
+}
+.moreinfo{
+    padding: 20px;
+    background-color: #03045E;
+    border: 3px solid white;
+}
+img{
+    border: 1px solid white;
 }

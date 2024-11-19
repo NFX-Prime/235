@@ -34,6 +34,7 @@
 
  xhr.addEventListener('readystatechange', function () {
  if (this.readyState === this.DONE) {
+   document.querySelector("#numresults").innerHTML = `Searching for ${limit.value} results!`;
  }
  });
 
@@ -48,6 +49,7 @@
  }
 
  function dataLoaded(e){
+
      let xhr = e.target;
 
      let obj =JSON.parse(xhr.responseText);
@@ -70,8 +72,10 @@
 
          let url = result.url;
 
-         let line = `<div class='result'><img src='${smallURL}' title='${result.title}'/>`;
-         line += `<p>Title: ${result.title}<br><a target='_blank' href='${result.game_url}'>View Game Page</a></p></div>`;
+         let line = `<div class='result'><img src='${smallURL}'title='${result.title}'/>`;
+         line += `<button class='resultButton' data-image='${smallURL}' data-title='${result.title}'
+         data-developer='${result.developer}' data-publisher='${result.publisher}' data-desc='${result.short_description}'
+         data-release='${result.release_date}'>Click Me For More Info On ${result.title}</button></div>`;
 
          bigString+= line;
      }
@@ -80,13 +84,18 @@
      let listResults = document.querySelectorAll(".result");
      console.log(listResults);
      for (let result of listResults) {
-        result.addEventListener("click", displayInfo);
+        result.querySelector("button").addEventListener("click", displayInfo);
      }
  }
 
  function displayInfo(e){
-    document.querySelector("#results").innerHTML = `<p>Here is more info for: ${e.target.title}</p>
-    <img src='${e.target.src}' alt='guhhh' width="60%">`
+    console.log(e);
+    document.querySelector("#results").innerHTML = `<div class='moreinfo'><p>Here is more info for: ${e.target.dataset.title}</p>
+    <img src='${e.target.dataset.image}' alt='${e.target.dataset.title}' width="65%">
+    <p>${e.target.dataset.desc}<br><br>
+    Developed By: <b>${e.target.dataset.developer}</b><br>
+    Published By: <b>${e.target.dataset.publisher}</b><br>
+    Released On: <b>${e.target.dataset.release}</b></p></div>`
  }
 
  function dataError(e){

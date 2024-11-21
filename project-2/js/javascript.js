@@ -75,7 +75,7 @@
          let line = `<div class='result'><img src='${smallURL}'title='${result.title}'/>`;
          line += `<button class='resultButton' data-image='${smallURL}' data-title='${result.title}'
          data-developer='${result.developer}' data-publisher='${result.publisher}' data-desc='${result.short_description}'
-         data-release='${result.release_date}'>Click Me For More Info On ${result.title}</button></div>`;
+         data-release='${result.release_date}' data-link='${result.game_url}'>Click Here For More Info On ${result.title}</button></div>`;
 
          bigString+= line;
      }
@@ -95,7 +95,11 @@
     <p>${e.target.dataset.desc}<br><br>
     Developed By: <b>${e.target.dataset.developer}</b><br>
     Published By: <b>${e.target.dataset.publisher}</b><br>
-    Released On: <b>${e.target.dataset.release}</b></p></div>`
+    Released On: <b>${e.target.dataset.release}</b></p>
+    <a href='${e.target.dataset.link}'>View Game Page</a></div>
+    <button id='exit'>Click to Go Back to Results!</button>`;
+
+    document.querySelector("#exit").addEventListener("click", searchButtonClicked);
  }
 
  function dataError(e){

@@ -37,6 +37,9 @@ body{
 h1{
     font-size: 3em;
     color: aqua;
+    text-shadow: 4px 4px #0077B6, 0 0 5px #0000FF;
+    background-color: #00B4D8;
+    padding: 10px;
 }
 p{
     color: #CAF0F8;
@@ -54,7 +57,7 @@ select{
 .widgets{
     color: #00B4D8;
 }
-main{
+#search{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -67,13 +70,26 @@ main{
 a:link{
     color: white;
 }
-a:hover{
-    background-color: #03045E;
+a:visited{
+    color: orange;
 }
+a:hover{
+    background-color: #00B4D8;
+}
+a:active{
+    color: #0077B6;
+}
+a:focus{
+    background-color: #90E0EF;
+}
+
 .resultButton{
     background-color: #03045E;
     color: white;
     padding: 10px;
+}
+.resultButton:active{
+    background-color: #90E0EF;
 }
 .moreinfo{
     padding: 20px;
@@ -82,4 +98,13 @@ a:hover{
 }
 img{
     border: 1px solid white;
+    text-shadow: 3px 3px 3px 3px;
+}
+
+button:hover{
+    transition-duration: 0.4s;
+    box-shadow: 0 12px 16px 0 #90E0EF,0 17px 50px 0 #90E0EF;
+}
+option{
+    background-color: whitesmoke;
 }

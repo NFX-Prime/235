@@ -15,10 +15,8 @@
 </header>
 <main>
 	<div id="search">
-	
-		<button type="button" id="search" class="green">Click to Display Games</button>
-		
 		<div class="widgets">
+			<button type="button" id="search">Click to Display Games</button>
 			<br>Max # results -> 
 			<select id="limit">
 				<option value="5" selected>5</option>
@@ -28,28 +26,27 @@
 				<option value="100">100</option>
 			</select>
 		</div>
+
+		<div class="widgets">
+			Select Platform ->
+			<select id="platform">
+				<option value="all" selected>Any</option>
+				<option value="pc">PC</option>
+				<option value="browser">Browser</option>	
+			</select>
+			<br><br>Sort By ->
+			<select id="sort">
+				<option value="all" selected>Any</option>
+				<option value="release-date">Release Date</option>
+				<option value="popularity">Popularity</option>
+				<option value="alphabetical">Alphabetical</option>
+				<option value="relevance">Relevance</option>
+			</select>
+		</div>	
 	</div>
-	<div class="widgets">
-		Select Platform -> (TBI)
-		<select id="platform">
-			<option value="all" selected>Any</option>
-			<option value="pc">PC</option>
-			<option value="browser">Browser</option>	
-		</select>
-		<br><br>Sort By:
-		<select id="sort">
-			<option value="all" selected>Any</option>
-			<option value="release-date">Release Date</option>
-			<option value="popularity">Popularity</option>
-			<option value="alphabetical">Alphabetical</option>
-			<option value="relevance">Relevance</option>
-		</select>
-		<p id="numresults">
-			No results yet!
-		</p>
-
-	</div>	
-
+	<p id="numresults">
+		No results yet!
+	</p>
 </main>
 <footer>
 	<p id="results">

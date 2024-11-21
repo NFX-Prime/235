@@ -67,15 +67,18 @@
      if(obj.length < parseInt(limit.value)){
       for (let i = 0; i<obj.length; i++) {
          results.push(obj[i]);
+         
       }
+      document.querySelector("#numresults").innerHTML = `Here are ${results.length} results!`;
      }else{
       for (let i = 0; i<parseInt(limit.value); i++) {
          results.push(obj[i]);
       }
+      document.querySelector("#numresults").innerHTML = `Here are ${limit.value} results!`;
      }
 
 
-     document.querySelector("#numresults").innerHTML = `Here are ${limit.value} results!`;
+
      let bigString = "";
      
      for(let i=0; i<results.length; i++){

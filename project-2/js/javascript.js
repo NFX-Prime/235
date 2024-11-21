@@ -1,5 +1,5 @@
  // 1
- window.onload = (e) => {document.querySelector("#search").onclick = searchButtonClicked};
+ window.onload = (e) => {document.querySelector("#searchbutton").onclick = searchButtonClicked};
 	
  // 2
  let displayTerm = "";
@@ -12,6 +12,7 @@
  let url = GIPHY_URL;
  let platform = document.querySelector("#platform").value.trim();
  let sort = document.querySelector("#sort").value.trim();
+ let genre = document.querySelector("#genre").value.trim();
 
  if(platform != "all"){
     url += "&platform="+platform;
@@ -19,7 +20,13 @@
  }
  if(sort != "all"){
     url += "&sort-by="+sort
+    console.log(url)
  }
+ if(genre != "all"){
+   url += "&category="+genre
+   console.log(url)
+ }
+ 
 
  let limit = document.querySelector("#limit").value;
 
@@ -57,9 +64,16 @@
 
      let results= [];
 
-     for (let i = 0; i<parseInt(limit.value); i++) {
-        results.push(obj[i]);
+     if(obj.length < parseInt(limit.value)){
+      for (let i = 0; i<obj.length; i++) {
+         results.push(obj[i]);
+      }
+     }else{
+      for (let i = 0; i<parseInt(limit.value); i++) {
+         results.push(obj[i]);
+      }
      }
+
 
      document.querySelector("#numresults").innerHTML = `Here are ${limit.value} results!`;
      let bigString = "";
@@ -96,8 +110,8 @@
     Developed By: <b>${e.target.dataset.developer}</b><br>
     Published By: <b>${e.target.dataset.publisher}</b><br>
     Released On: <b>${e.target.dataset.release}</b></p>
-    <a href='${e.target.dataset.link}'>View Game Page</a></div>
-    <button id='exit'>Click to Go Back to Results!</button>`;
+    <a href='${e.target.dataset.link}'>View Game Page</a><br><br>
+    <button id='exit'>Click to Go Back to Results!</button></div>`;
 
     document.querySelector("#exit").addEventListener("click", searchButtonClicked);
  }

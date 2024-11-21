@@ -69,7 +69,7 @@
          results.push(obj[i]);
          
       }
-      document.querySelector("#numresults").innerHTML = `Here are ${results.length} results!`;
+      document.querySelector("#numresults").innerHTML = `Here are ${results.length} results! (Not enough games for ${limit.value})`;
      }else{
       for (let i = 0; i<parseInt(limit.value); i++) {
          results.push(obj[i]);

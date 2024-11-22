@@ -68,7 +68,7 @@ select{
 .result{
     display: flex;
     flex-flow: column wrap;
-    width: 40%;
+    width: 30%;
 }
 a:link{
     color: white;
@@ -114,4 +114,28 @@ button:hover{
 }
 option{
     background-color: whitesmoke;
+}
+@media screen and (min-width:1365px) and (max-width:1650px){
+    .result{
+        display: flex;
+        align-content: center;
+        flex-flow: column wrap;
+        width: 40%;
+    }
+}
+@media screen and (max-width:1365px){
+    .result{
+        display: flex;
+        align-content: center;
+        flex-flow: column wrap;
+        width: 40%;
+    }
+    #results{
+        display:flex;
+        flex-flow: column wrap;
+        align-content: center;
+        text-align: center;
+        padding: 50px;
+        background-image: linear-gradient(180deg,#0077B6, #03045E);
+    }
 }

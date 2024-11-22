@@ -4,15 +4,9 @@
    const storedSort = localStorage.getItem(sortKey);
    const storedGenre = localStorage.getItem(genreKey);
    
-   if(storedPlat){
-      document.querySelector(`#platform > option[value='${storedPlat}']`).selected = true;
-   }
-   if(storedSort){
-      document.querySelector(`#sort > option[value='${storedSort}']`).selected = true;
-   }
-   if(storedGenre){
-      document.querySelector(`#genre > option[value='${storedGenre}']`).selected = true;
-   }
+   getSavedData(storedPlat, "#platform");
+   getSavedData(storedSort, "#sort");
+   getSavedData(storedGenre, "#genre");
  };
 	
  // 2
@@ -23,8 +17,6 @@
  const platformKey = prefix + "platform";
  const sortKey = prefix + "sort";
  const genreKey = prefix + "genre";
-
- 
 
  // 3
  function searchButtonClicked(){
@@ -38,8 +30,6 @@
  const platform = document.querySelector("#platform").value.trim();
  const sort = document.querySelector("#sort").value.trim();
  const genre = document.querySelector("#genre").value.trim();
-
- console.log(document.querySelector("#platform"));
  localStorage.setItem(platformKey, platform);
  localStorage.setItem(sortKey, sort);
  localStorage.setItem(genreKey, genre);
@@ -49,7 +39,6 @@
  url += urlCreate("&platform=", platform);
  url += urlCreate("&sort-by=", sort);
  url += urlCreate("&category=", genre);
-
 
  let limit = document.querySelector("#limit").value;
 
@@ -153,4 +142,10 @@
       return category + query;
    }
    return "";
+ }
+
+ function getSavedData(stored, selector){
+   if(stored){
+      document.querySelector(`${selector} > option[value='${stored}']`).selected = true;
+   }
  }

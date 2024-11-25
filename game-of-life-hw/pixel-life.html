@@ -1,58 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script src="lifeworld.js">
+
+	</script>
 	<meta charset="utf-8" />
 	<title>Pixel Arteur</title>
 	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
 	<style>
-	span.cell{
-		height:8px;
-		width:8px;
-		border:1px solid purple;
-		background-color: #ccc;
-		padding:0;
-		margin:0;
-		position:absolute;
-	}
-	
-	/* Get rid of the cell border when it is selected */
-	span.cellSelected{
-		height:10px;
-		width:10px;
-		background-color: red;
-		padding:0;
-		margin:0;
-		position:absolute;
-	}
-	
-	#gridContainer{
-		top:5px;
-		left:5px;
-		padding:0;
-		display:inline-block;
-		position:absolute;
-	}
-	
-	#colorChooser{
-		position: absolute;
-		top: 65px;
-		left:800px;
-	}
-	
-	h1{
-		font-family: 'Press Start 2P', cursive;
-		display: inline-block;
-		position:absolute;
-		font-size:1.3em;
-		top: 0;
-		left:800px;
-	}
-	
+		@import url(lifeworld.css);
 	</style>
 </head>
 <body>
 <div id="gridContainer"></div>
-<h1>Pixel ArTeur</h1>
+<h1>LIFE!</h1>
 <select id="colorChooser">
 	<option value="aqua">Aqua</option>
 	<option value="Bisque">Bisque</option>
@@ -75,9 +36,9 @@
 
 <script>
 // 1
-const numCols = 30;
-const numRows = 20;
-const cellWidth = 25;
+const numCols = 70;
+const numRows = 40;
+const cellWidth = 10;
 const cellSpacing = 1;
 
 // 2
@@ -147,6 +108,50 @@ window.onmouseup = (e) =>{
 document.querySelector("#colorChooser").onchange = (e) =>{
     color = e.target.value;
 }
+
+				// Life Stuff
+
+		// 1
+		let lastUpdate = performance.now();
+
+		// 2
+		let lastFrame = performance.now();
+
+		// 3
+		let maxFrameDelay = 1000/0.5;
+
+		// 4
+		lifeworld.init(numCols, numRows);
+
+		// 5
+		loop(performance.now());
+
+		// 6
+
+		function loop(timestamp){
+			requestAnimationFrame(loop);
+			lastUpdate = timestamp;
+			if(timestamp -lastFrame > maxFrameDelay){
+				lastFrame = timestamp;
+				lifeworld.step();
+				updateGrid();
+			}
+		}
+
+		// 7 
+		function updateGrid(){
+			for(let row = 0; row<numRows; row++){
+				for(let col = 0;col<numCols;col++){
+					let element = cells[row][col];
+					if(lifeworld.world[row][col] == 1){
+						element.style.backgroundColor = "red";
+					}else{
+						element.style.backgroundColor="white";
+					}
+
+				}
+			}	
+		}
 </script>
 </body>
 </html>

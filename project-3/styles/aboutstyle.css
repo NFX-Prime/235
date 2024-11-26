@@ -32,3 +32,13 @@ div{
     padding: 20px;
     border: 4px solid #FF751A;
 }
+a{  
+    color: #FF751A;
+    padding: 2px;
+}
+a:hover{
+    background-color: #939393;
+}
+a:visited{
+    color: #EEEEEE;
+}

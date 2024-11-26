@@ -36,10 +36,9 @@ const lifeworld = {
         if(row >0 && col > 0){
 		// row and col should be < the length of the applicable array, minus 1. If not return 0
             if (row < this.world.length -1 && col < this.world.length -1){      		
-		        // count up how many neighbors are alive at N,NE,E,SE,S,SW,W,SE - use this.world[row][col-1] etc
+		        // count up how many neighbors are alive at N,NE,E,SE,S,SW,W,NW - use this.world[row][col-1] etc
                 
                 let numLiving = 0;
-                console.log(this.world);
 
                 if (this.world[row+1][col] == 1){
                     numLiving += 1;
@@ -66,7 +65,6 @@ const lifeworld = {
                     numLiving += 1;
                 }       
 		
-                console.log(numLiving);
 		        // return that sum
                 return numLiving;
             }
@@ -94,16 +92,15 @@ const lifeworld = {
                 else if (this.getLivingNeighbors(row, col) >= 2  || this.getLivingNeighbors(row, col) <= 3){
                     this.worldBuffer[row][col] = 1;
                 }
-                else if (this.getLivingNeighbors(row, col) >3){
+                if (this.getLivingNeighbors(row, col) >3){
                     this.worldBuffer[row][col] = 0;
                 }
-                else if (this.getLivingNeighbors(row, col) == 3){
+                if (this.getLivingNeighbors(row, col) == 3){
                     this.worldBuffer[row][col] = 1;
                 }
             }
         }
         let temp = this.worldBuffer;
-        console.log(this.worldBuffer);
         this.world = temp;
 	    // Determine if that cell in the next generation should be alive (see wikipedia life page linked at top)
 	    // Put a 1 or zero into the right location in this.worldBuffer

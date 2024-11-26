@@ -1,0 +1,24 @@
+h1{
+    font-family: "Bungee Spice", sans-serif;
+    font-size: 5em;
+    color: blue;
+    text-align: center;
+}
+h2{
+    font-family: "Chango", 'Times New Roman', Times, serif;
+    font-size: 2em;
+    color: #FA812F;
+}
+h3{
+    font-family: "Chango", 'Times New Roman', Times, serif;
+    font-size: 1.6em;
+    color: #FA812F;
+}
+p, li{
+    font-family: "Amaranth", sans-serif;
+    font-size: 1.3em;
+    color: #FA4032;
+}
+body{
+    background-color: #FEF3E2;
+}

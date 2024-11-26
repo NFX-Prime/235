@@ -143,7 +143,8 @@ document.querySelector("#colorChooser").onchange = (e) =>{
 			for(let row = 0; row<numRows; row++){
 				for(let col = 0;col<numCols;col++){
 					let element = cells[row][col];
-					if(lifeworld.world[row][col] == 1){
+					if(lifeworld.world[row][col] ==  1){
+						console.log("erm");
 						element.style.backgroundColor = "red";
 					}else{
 						element.style.backgroundColor="white";

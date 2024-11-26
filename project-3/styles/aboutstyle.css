@@ -1,24 +1,34 @@
+
 h1{
-    font-family: "Bungee Spice", sans-serif;
+    font-family: "Press Start 2P", sans-serif;
     font-size: 5em;
-    color: blue;
+    color: #EEEEEE;
     text-align: center;
 }
 h2{
     font-family: "Chango", 'Times New Roman', Times, serif;
     font-size: 2em;
-    color: #FA812F;
+    color: #DC5F00;
 }
 h3{
     font-family: "Chango", 'Times New Roman', Times, serif;
-    font-size: 1.6em;
-    color: #FA812F;
+    font-size: 1.5em;
+    color: #DC5F00;
 }
 p, li{
     font-family: "Amaranth", sans-serif;
     font-size: 1.3em;
-    color: #FA4032;
+    color: #EEEEEE;
+
 }
 body{
-    background-color: #FEF3E2;
+    background-color: #CF0A0A;
+}
+img{
+    border: 2px grey solid;
+}
+div{
+    background-color: #000000;
+    padding: 20px;
+    border: 4px solid #DC5F00;
 }

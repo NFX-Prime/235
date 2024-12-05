@@ -54,3 +54,4 @@ class Bullet extends PIXI.Graphics{
         this.y += this.fwd.y *this.speed *dt;
     }
 }
+

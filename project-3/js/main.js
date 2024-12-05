@@ -84,19 +84,19 @@ function createAllLabels(){
 
     startScene.addChild(sodaCan);
 
-    let playIndicator = new PIXI.Text("Press M1\n  to Play!", {
+    let playIndicator = new PIXI.Text("Press M1 to Play!", {
         fill: "#fc9003",
         fontSize: 70,
         fontFamily: "Arial",
         stroke: 0xffffff,
         strokeThickness: 3, 
     });
-    playIndicator.y = 450;
-    playIndicator.x = 135;
+    playIndicator.y = 580;
+    playIndicator.x = 80;
 
     startScene.addChild(playIndicator);
 
-    let tutorialMessage = new PIXI.Text("How To Play: Use M1 to launch sodas at patrons\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
+    let tutorialMessage = new PIXI.Text("How To Play: Use M1 to launch sodas at patrons,\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
@@ -107,6 +107,18 @@ function createAllLabels(){
     tutorialMessage.y = 130;
 
     startScene.addChild(tutorialMessage);
+    
+    let tip = new PIXI.Text("Tip: Don't Throw Too many Cans, you'll lose lives!", {
+        fill: "#fc9003",
+        fontSize: 25,
+        fontFamily: "Arial",
+        stroke: 0xffffff,
+        strokeThickness: 3, 
+    });
+    tip.x = 70;
+    tip.y = 500;
+
+    startScene.addChild(tip);
 
 
 
@@ -172,6 +184,8 @@ function gameLoop(){
 
     app.view.onclick = launchSoda;
     window.onkeydown = movePlayer;
+
+    
     for (let s of sodas) {
         s.move(dt);
       }
@@ -187,15 +201,16 @@ function gameLoop(){
 }
 
 function launchSoda(){
-
     let thrownSoda = new Soda(assets.soda, player.x, player.y);
     sodas.push(thrownSoda);
     gameScene.addChild(thrownSoda);
 }
 function movePlayer(){
+    console.log(window.onkeydown.key);
     player.y += 100;
     if (player.y > 450){
         player.y= 150;
     }
 }
 
+// function TBM, object w/ time passed to limit number of cans thrown

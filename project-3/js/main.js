@@ -10,10 +10,14 @@ let gameOverScene;
 let tutorialScene;
 let player;
 
+let scoreIndicator;
+
 let sceneHeight;
 let sceneWidth;
 let sodas = [];
 let patrons = [];
+let newPatron
+let score;
 
 let playerPos;
 
@@ -38,6 +42,7 @@ async function setup(){
 
     document.body.appendChild(app.canvas);
     document.body.style.textAlign = "center";
+    score = 0;
 
     stage = app.stage;
     sceneWidth = app.renderer.width;
@@ -108,7 +113,7 @@ function createAllLabels(){
 
     startScene.addChild(tutorialMessage);
     
-    let tip = new PIXI.Text("Tip: Don't Throw Too many Cans, you'll lose lives!", {
+    let tip = new PIXI.Text("Tip: Don't serve too many cans, you'll lose lives!", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
@@ -134,20 +139,6 @@ function createAllLabels(){
 
     gameScene.addChild(livesIndicator);
 
-    let scoreIndicator = new PIXI.Text("Score: 0",{
-        fill: "#fc9003",
-        fontSize: 30,
-        fontFamily: "Arial",
-        stroke: 0xffffff,
-        strokeThickness: 3, 
-    });
-    scoreIndicator.x = 570;
-    scoreIndicator.y = 10;
-    player = new Waiter(assets.waiter);
-    gameScene.addChild(player);
-    player.x = 600;
-    player.y = 150;
-
     let bar1, bar2, bar3, bar4;
     bar1 = PIXI.Sprite.from(assets.barStools);
     bar2 = PIXI.Sprite.from(assets.barStools);
@@ -167,6 +158,20 @@ function createAllLabels(){
     bar3.y = 350;
     bar4.x = 200;
     bar4.y = 450;
+
+    scoreIndicator = new PIXI.Text(`Score: ${score}` ,{
+        fill: "#fc9003",
+        fontSize: 30,
+        fontFamily: "Arial",
+        stroke: 0xffffff,
+        strokeThickness: 3, 
+    });
+    scoreIndicator.x = sceneHeight/2;
+    scoreIndicator.y = 10;
+    player = new Waiter(assets.waiter);
+    gameScene.addChild(player);
+    player.x = 600;
+    player.y = 150;
 
 
 
@@ -190,12 +195,37 @@ function gameLoop(){
         s.move(dt);
       }
 
-    for (let s of sodas){
-        if (s.x < 10){
-            gameScene.removeChild(s);
-            s.isAlive = false;
+
+    for (let p of patrons){
+        p.move(dt);
+    }
+
+    for (let p of patrons){
+        for (let s of sodas){
+            if (s.x < 10){
+                gameScene.removeChild(s);
+                s.isAlive = false;
+            }
+            if (rectsIntersect(p,s)){
+                gameScene.removeChild(s);
+                gameScene.removeChild(p);
+                s.isAlive = false;
+                p.isAlive = false;
+                increaseScoreBy(30);
+                
+
+            }
+            sodas = sodas.filter((s) => s.isAlive);
+            patrons = patrons.filter((p) => p.isAlive);
         }
-        sodas = sodas.filter((s) => s.isAlive)
+    }
+    if (patrons.length <= 0){
+        for(let i=0;i<4;i++){
+            newPatron = new Patron(assets.patron, 200, 150);
+            newPatron.y += 100*i;
+            patrons.push(newPatron);
+            gameScene.addChild(newPatron);
+        }
     }
 
 }
@@ -213,4 +243,20 @@ function movePlayer(){
     }
 }
 
+function increaseScoreBy(inc){
+    score += inc;
+    scoreIndicator.text = `Score: ${score}`;
+}
+
 // function TBM, object w/ time passed to limit number of cans thrown
+function refill(){
+
+}
+
+// helper method
+
+function rectsIntersect(a,b){
+    var ab = a.getBounds();
+    var bb = b.getBounds();
+    return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
+}

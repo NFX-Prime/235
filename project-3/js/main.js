@@ -11,6 +11,7 @@ let tutorialScene;
 let player;
 
 let scoreIndicator;
+let livesIndicator;
 
 let sceneHeight;
 let sceneWidth;
@@ -18,17 +19,18 @@ let sodas = [];
 let patrons = [];
 let newPatron
 let score;
+let lives;
 
 let playerPos;
 
 loadImages()
 async function loadImages(){
     PIXI.Assets.addBundle("sprites", {
-        waiter: "images/waiter_placeholder.png",
+        waiter: "images/waiter.png",
         soda: "images/soda.png",
         bigSoda: "images/soda-Big.png",
         barStools: "images/barStools.png",
-        patron: "images/patron_placeholder.png",
+        patron: "images/patron.png",
       });
 
       assets = await PIXI.Assets.loadBundle("sprites", (progress) => {
@@ -43,6 +45,7 @@ async function setup(){
     document.body.appendChild(app.canvas);
     document.body.style.textAlign = "center";
     score = 0;
+    lives = 5;
 
     stage = app.stage;
     sceneWidth = app.renderer.width;
@@ -101,7 +104,7 @@ function createAllLabels(){
 
     startScene.addChild(playIndicator);
 
-    let tutorialMessage = new PIXI.Text("How To Play: Use M1 to launch sodas at patrons,\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
+    let tutorialMessage = new PIXI.Text("How To Play: Use M1 to slide sodas to patrons,\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
@@ -127,7 +130,7 @@ function createAllLabels(){
 
 
 
-    let livesIndicator = new PIXI.Text("Lives: 3", {
+    livesIndicator = new PIXI.Text(`Lives: ${lives}`, {
         fill: "#fc9003",
         fontSize: 30,
         fontFamily: "Arial",
@@ -150,13 +153,13 @@ function createAllLabels(){
     gameScene.addChild(bar3);
     gameScene.addChild(bar4);
 
-    bar1.x = 200;
+    bar1.x = 20;
     bar1.y = 150;
-    bar2.x = 200;
+    bar2.x = 20;
     bar2.y = 250;
-    bar3.x = 200;
+    bar3.x = 20;
     bar3.y = 350;
-    bar4.x = 200;
+    bar4.x = 20;
     bar4.y = 450;
 
     scoreIndicator = new PIXI.Text(`Score: ${score}` ,{
@@ -170,8 +173,8 @@ function createAllLabels(){
     scoreIndicator.y = 10;
     player = new Waiter(assets.waiter);
     gameScene.addChild(player);
-    player.x = 600;
-    player.y = 150;
+    player.x = 660;
+    player.y = 170;
 
 
 
@@ -205,6 +208,7 @@ function gameLoop(){
             if (s.x < 10){
                 gameScene.removeChild(s);
                 s.isAlive = false;
+                decreaseLifeBy(1);
             }
             if (rectsIntersect(p,s)){
                 gameScene.removeChild(s);
@@ -221,7 +225,7 @@ function gameLoop(){
     }
     if (patrons.length <= 0){
         for(let i=0;i<4;i++){
-            newPatron = new Patron(assets.patron, 200, 150);
+            newPatron = new Patron(assets.patron, 100, 130);
             newPatron.y += 100*i;
             patrons.push(newPatron);
             gameScene.addChild(newPatron);
@@ -231,21 +235,26 @@ function gameLoop(){
 }
 
 function launchSoda(){
-    let thrownSoda = new Soda(assets.soda, player.x, player.y);
+    let thrownSoda = new Soda(assets.soda, player.x, player.y-20);
     sodas.push(thrownSoda);
     gameScene.addChild(thrownSoda);
 }
 function movePlayer(){
     console.log(window.onkeydown.key);
     player.y += 100;
-    if (player.y > 450){
-        player.y= 150;
+    if (player.y > 470){
+        player.y= 170;
     }
 }
 
 function increaseScoreBy(inc){
     score += inc;
     scoreIndicator.text = `Score: ${score}`;
+}
+
+function decreaseLifeBy(dec){
+    lives -= dec;
+    livesIndicator.text = `Lives: ${lives}`;
 }
 
 // function TBM, object w/ time passed to limit number of cans thrown

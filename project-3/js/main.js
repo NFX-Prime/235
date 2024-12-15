@@ -5,11 +5,14 @@ let stage;
 let assets;
 
 let startScene;
-let gameScene, waiter, patron, soda, bigSoda, barStools, tossSound, drinkSound, crashSound;
+let gameScene, waiter, patron, soda, bigSoda, barStools, wall, floor, field, tossSound, drinkSound, crashSound;
+let bar1, bar2, bar3, bar4;
 let gameOverScene;
 let tutorialScene;
 let player;
-
+let playAgain, finalScore, gameOverText;
+let wallDecor, footballField, floorDecor;
+let playIndicator, title, tutorialMessage, tip
 let scoreIndicator;
 let livesIndicator;
 
@@ -17,9 +20,13 @@ let sceneHeight;
 let sceneWidth;
 let sodas = [];
 let patrons = [];
+let bars = [];
+let bar;
 let newPatron
-let score;
-let lives;
+let score = 0;
+let lives = 5;
+let scale = 0;
+let paused = true;
 
 let playerPos;
 
@@ -31,6 +38,9 @@ async function loadImages(){
         bigSoda: "images/soda-Big.png",
         barStools: "images/barStools.png",
         patron: "images/patron.png",
+        field: "images/football.png",
+        wall: "images/wall.png",
+        floor: "images/floor.png",
       });
 
       assets = await PIXI.Assets.loadBundle("sprites", (progress) => {
@@ -41,11 +51,10 @@ async function loadImages(){
 async function setup(){
 
     await app.init({ width: 700, height: 700, background: "#4694e8"});
+    app.ticker.add(gameLoop);
 
     document.body.appendChild(app.canvas);
     document.body.style.textAlign = "center";
-    score = 0;
-    lives = 5;
 
     stage = app.stage;
     sceneWidth = app.renderer.width;
@@ -74,8 +83,11 @@ async function setup(){
 }
 
 function createAllLabels(){
+    lives = 5;
+    score = 0;
+
     // Starting Scene additions
-    let title = new PIXI.Text("Soda Popper!", {
+    title = new PIXI.Text("Soda Popper!", {
         fill: "#fc9003",
         fontSize: 96,
         fontFamily: "Arial",
@@ -92,7 +104,7 @@ function createAllLabels(){
 
     startScene.addChild(sodaCan);
 
-    let playIndicator = new PIXI.Text("Press M1 to Play!", {
+    playIndicator = new PIXI.Text("Press M1 to Play!", {
         fill: "#fc9003",
         fontSize: 70,
         fontFamily: "Arial",
@@ -104,7 +116,7 @@ function createAllLabels(){
 
     startScene.addChild(playIndicator);
 
-    let tutorialMessage = new PIXI.Text("How To Play: Use M1 to slide sodas to patrons,\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
+    tutorialMessage = new PIXI.Text("How To Play: Use M1 to slide sodas to patrons,\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
@@ -116,7 +128,7 @@ function createAllLabels(){
 
     startScene.addChild(tutorialMessage);
     
-    let tip = new PIXI.Text("Tip: Don't serve too many cans, you'll lose lives!", {
+    tip = new PIXI.Text("Tip: Don't serve too many cans, you'll lose lives!", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
@@ -128,7 +140,35 @@ function createAllLabels(){
 
     startScene.addChild(tip);
 
+    wallDecor = new Decoration(assets.wall, 350,50)
+    footballField = new Decoration(assets.field, 550, 50);
+    floorDecor = new Decoration(assets.floor, 350, 450);
+    gameScene.addChild(floorDecor);
+    gameScene.addChild(wallDecor);
+    gameScene.addChild(footballField);
 
+    player = new Waiter(assets.waiter);
+    gameScene.addChild(player);
+    player.x = 660;
+    player.y = 170;
+    
+
+    for(let i = 0; i<4; i++){
+        bar = new Decoration(assets.barStools, 320, 200 + (100*i));
+        bars.push(bar);
+        gameScene.addChild(bars[i]);
+    }
+
+    scoreIndicator = new PIXI.Text(`Score: ${score}` ,{
+        fill: "#fc9003",
+        fontSize: 30,
+        fontFamily: "Arial",
+        stroke: 0xffffff,
+        strokeThickness: 3, 
+    });
+    scoreIndicator.x = sceneWidth/2 - 50;
+    scoreIndicator.y = 10;
+    gameScene.addChild(scoreIndicator);
 
     livesIndicator = new PIXI.Text(`Lives: ${lives}`, {
         fill: "#fc9003",
@@ -142,57 +182,55 @@ function createAllLabels(){
 
     gameScene.addChild(livesIndicator);
 
-    let bar1, bar2, bar3, bar4;
-    bar1 = PIXI.Sprite.from(assets.barStools);
-    bar2 = PIXI.Sprite.from(assets.barStools);
-    bar3 = PIXI.Sprite.from(assets.barStools);
-    bar4 = PIXI.Sprite.from(assets.barStools);
+    gameOverText = new PIXI.Text(`Game Over!`, {
+        fill: "#fc9003",
+        fontSize: 96,
+        fontFamily: "Arial",
+        stroke: 0xffffff,
+        strokeThickness: 3, });
+    gameOverScene.addChild(gameOverText);
+    gameOverText.x = 100;
+    gameOverText.y = 20;
 
-    gameScene.addChild(bar1);
-    gameScene.addChild(bar2);
-    gameScene.addChild(bar3);
-    gameScene.addChild(bar4);
-
-    bar1.x = 20;
-    bar1.y = 150;
-    bar2.x = 20;
-    bar2.y = 250;
-    bar3.x = 20;
-    bar3.y = 350;
-    bar4.x = 20;
-    bar4.y = 450;
-
-    scoreIndicator = new PIXI.Text(`Score: ${score}` ,{
+    finalScore = new PIXI.Text("",{
         fill: "#fc9003",
         fontSize: 30,
         fontFamily: "Arial",
         stroke: 0xffffff,
         strokeThickness: 3, 
     });
-    scoreIndicator.x = sceneHeight/2;
-    scoreIndicator.y = 10;
-    player = new Waiter(assets.waiter);
-    gameScene.addChild(player);
-    player.x = 660;
-    player.y = 170;
+    gameOverScene.addChild(finalScore);
+    finalScore.x = 250;
+    finalScore.y = 150;
 
+    playAgain = new PIXI.Text(`Press M1 to continue!`, {
+        fill: "#fc9003",
+        fontSize: 60,
+        fontFamily: "Arial",
+        stroke: 0xffffff,
+        strokeThickness: 3, 
+    });
+    gameOverScene.addChild(playAgain);
+    playAgain.y = 580;
+    playAgain.x = 30;
 
-
-    gameScene.addChild(scoreIndicator);
     app.view.onclick = function(e){
         startScene.visible = false;
         gameScene.visible = true;
-        app.ticker.add(gameLoop);
+        paused = false;
     };   
 }
 
 function gameLoop(){
+    if(paused){
+        return;
+    }
+
     let dt = 1 / app.ticker.FPS;
     if (dt > 1 / 12) dt = 1 / 12;
 
     app.view.onclick = launchSoda;
     window.onkeydown = movePlayer;
-
     
     for (let s of sodas) {
         s.move(dt);
@@ -204,6 +242,10 @@ function gameLoop(){
     }
 
     for (let p of patrons){
+        if (p.x >= player.x){
+            patrons.forEach((b) => gameScene.removeChild(b));
+            decreaseLifeBy(1);
+        }
         for (let s of sodas){
             if (s.x < 10){
                 gameScene.removeChild(s);
@@ -224,12 +266,24 @@ function gameLoop(){
         }
     }
     if (patrons.length <= 0){
+        scale += 1;
         for(let i=0;i<4;i++){
-            newPatron = new Patron(assets.patron, 100, 130);
+            newPatron = new Patron(assets.patron, 100, 123);
             newPatron.y += 100*i;
+            newPatron.speed *= (1.2*scale);
             patrons.push(newPatron);
             gameScene.addChild(newPatron);
         }
+        console.log(scale);
+        
+    }
+
+    if(lives <= 0){
+        paused = true;
+        gameScene.visible = false;
+        gameOverScene.visible = true;
+        end();
+        return;
     }
 
 }
@@ -240,7 +294,6 @@ function launchSoda(){
     gameScene.addChild(thrownSoda);
 }
 function movePlayer(){
-    console.log(window.onkeydown.key);
     player.y += 100;
     if (player.y > 470){
         player.y= 170;
@@ -262,6 +315,34 @@ function refill(){
 
 }
 
+function end(){
+
+    paused = true;
+
+    window.onkeydown = null;
+    app.view.onclick = null;
+    lives = 5;
+    scale = 0;
+    finalScore.text = `Final Score: ${score}`;
+
+    sodas.forEach((c) => gameScene.removeChild(c));
+    sodas = [];
+
+    patrons.forEach((b) => gameScene.removeChild(b));
+    patrons = [];
+
+    bars.forEach((c) => gameScene.removeChild(c));
+    bars = [];
+
+    gameScene.visible = false;
+    gameOverScene.visible = true;
+    app.view.onclick = function(e){
+        gameOverScene.visible = false;
+        startScene.visible = true;
+        finalScore.text = "";
+        createAllLabels();
+    }
+}
 // helper method
 
 function rectsIntersect(a,b){

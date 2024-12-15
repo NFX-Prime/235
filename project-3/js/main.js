@@ -5,13 +5,15 @@ let stage;
 let assets;
 
 let startScene;
-let gameScene, waiter, patron, soda, bigSoda, barStools, wall, floor, field, tossSound, drinkSound, crashSound;
+let gameScene, waiter, patron, soda, bigSoda, barStools, sodaCan, sodaTipped, wall, floor, field, miss, patronHit, patronReach, start;
 let bar1, bar2, bar3, bar4;
 let gameOverScene;
 let tutorialScene;
 let player;
 let playAgain, finalScore, gameOverText;
-let wallDecor, footballField, floorDecor;
+let wallDecorGame, footballFieldGame, floorDecorGame;
+let wallDecorTitle, floorDecorTitle;
+let wallDecorGameOver, floorDecorGameOver, sodaTippedGameOver;
 let playIndicator, title, tutorialMessage, tip
 let scoreIndicator;
 let livesIndicator;
@@ -27,6 +29,7 @@ let score = 0;
 let lives = 5;
 let scale = 0;
 let paused = true;
+let timer = 0;
 
 let playerPos;
 
@@ -41,6 +44,7 @@ async function loadImages(){
         field: "images/football.png",
         wall: "images/wall.png",
         floor: "images/floor.png",
+        sodaTipped: "images/sodaTipped.png",
       });
 
       assets = await PIXI.Assets.loadBundle("sprites", (progress) => {
@@ -78,6 +82,22 @@ async function setup(){
 
     // sounds (to be loaded)
 
+    start = new Howl({
+        src: ["sounds/start.mp3"],
+    });
+
+    miss = new Howl({
+        src: ["sounds/miss.mp3"],
+    })
+
+    patronHit = new Howl({
+        src: ["sounds/patronHit.mp3"],
+    })
+
+    patronReach = new Howl({
+        src: ["sounds/patronReach.mp3"],
+    })
+
     createAllLabels();
 
 }
@@ -85,6 +105,16 @@ async function setup(){
 function createAllLabels(){
     lives = 5;
     score = 0;
+
+    wallDecorTitle = new Decoration(assets.wall, 350,50)
+    floorDecorTitle = new Decoration(assets.floor, 350, 450);
+    startScene.addChild(wallDecorTitle);
+    startScene.addChild(floorDecorTitle);   
+
+    wallDecorGameOver = new Decoration(assets.wall, 350,50)
+    floorDecorGameOver = new Decoration(assets.floor, 350, 450);
+    gameOverScene.addChild(wallDecorGameOver);
+    gameOverScene.addChild(floorDecorGameOver);   
 
     // Starting Scene additions
     title = new PIXI.Text("Soda Popper!", {
@@ -98,10 +128,7 @@ function createAllLabels(){
     title.y = 20;
 
     startScene.addChild(title);
-    const sodaCan = PIXI.Sprite.from("images/soda-Big.png");
-    sodaCan.x = sceneWidth/2 - 150;
-    sodaCan.y = 180;
-
+    sodaCan = new Decoration(assets.bigSoda, sceneWidth/2, sceneHeight/2);
     startScene.addChild(sodaCan);
 
     playIndicator = new PIXI.Text("Press M1 to Play!", {
@@ -135,17 +162,17 @@ function createAllLabels(){
         stroke: 0xffffff,
         strokeThickness: 3, 
     });
-    tip.x = 70;
-    tip.y = 500;
+    tip.x = 85;
+    tip.y = 530;
 
     startScene.addChild(tip);
 
-    wallDecor = new Decoration(assets.wall, 350,50)
-    footballField = new Decoration(assets.field, 550, 50);
-    floorDecor = new Decoration(assets.floor, 350, 450);
-    gameScene.addChild(floorDecor);
-    gameScene.addChild(wallDecor);
-    gameScene.addChild(footballField);
+    wallDecorGame = new Decoration(assets.wall, 350,50)
+    footballFieldGame = new Decoration(assets.field, 550, 50);
+    floorDecorGame = new Decoration(assets.floor, 350, 450);
+    gameScene.addChild(floorDecorGame);
+    gameScene.addChild(wallDecorGame);
+    gameScene.addChild(footballFieldGame);
 
     player = new Waiter(assets.waiter);
     gameScene.addChild(player);
@@ -211,12 +238,16 @@ function createAllLabels(){
         strokeThickness: 3, 
     });
     gameOverScene.addChild(playAgain);
-    playAgain.y = 580;
-    playAgain.x = 30;
+    playAgain.y = 560;
+    playAgain.x = 70;
+
+    sodaTippedGameOver = new Decoration(assets.sodaTipped, sceneWidth/2, sceneHeight/2);
+    gameOverScene.addChild(sodaTippedGameOver);
 
     app.view.onclick = function(e){
         startScene.visible = false;
         gameScene.visible = true;
+        start.play();
         paused = false;
     };   
 }
@@ -225,6 +256,7 @@ function gameLoop(){
     if(paused){
         return;
     }
+    timer += 1;
 
     let dt = 1 / app.ticker.FPS;
     if (dt > 1 / 12) dt = 1 / 12;
@@ -244,12 +276,17 @@ function gameLoop(){
     for (let p of patrons){
         if (p.x >= player.x){
             patrons.forEach((b) => gameScene.removeChild(b));
+            patrons = [];
+            scale = 0;
+            timer = 0;
+            patronReach.play();
             decreaseLifeBy(1);
         }
         for (let s of sodas){
             if (s.x < 10){
                 gameScene.removeChild(s);
                 s.isAlive = false;
+                miss.play();
                 decreaseLifeBy(1);
             }
             if (rectsIntersect(p,s)){
@@ -257,25 +294,22 @@ function gameLoop(){
                 gameScene.removeChild(p);
                 s.isAlive = false;
                 p.isAlive = false;
+                patronHit.play();
                 increaseScoreBy(30);
-                
-
             }
             sodas = sodas.filter((s) => s.isAlive);
             patrons = patrons.filter((p) => p.isAlive);
         }
     }
-    if (patrons.length <= 0){
-        scale += 1;
+    if (patrons.length <= 0 || timer % 800 == 0){
+
         for(let i=0;i<4;i++){
+            timer = 0;
             newPatron = new Patron(assets.patron, 100, 123);
             newPatron.y += 100*i;
-            newPatron.speed *= (1.2*scale);
             patrons.push(newPatron);
             gameScene.addChild(newPatron);
         }
-        console.log(scale);
-        
     }
 
     if(lives <= 0){

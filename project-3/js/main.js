@@ -164,7 +164,7 @@ function createAllLabels(){
         stroke: 0xffffff,
         strokeThickness: 3,
     });
-    title.x = 50;
+    title.x = 55;
     title.y = 20;
 
     startScene.addChild(title);
@@ -183,14 +183,14 @@ function createAllLabels(){
 
     startScene.addChild(playIndicator);
 
-    tutorialMessage = new PIXI.Text("\t\t\t\t\t\t\t\tHow To Play: Use M1 to slide sodas to patrons,\nW/S to move up/down the bars and a to go through them", {
+    tutorialMessage = new PIXI.Text("\t\t\t\t\t\t\t\tHow To Play: Use M1 to slide sodas to patrons,\nW/S to move up/down the bars and A to go through them", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
         stroke: 0xffffff,
         strokeThickness: 3, 
     });
-    tutorialMessage.x = 40;
+    tutorialMessage.x = 35;
     tutorialMessage.y = 130;
 
     startScene.addChild(tutorialMessage);
@@ -393,20 +393,27 @@ function launchSoda(){
     sodaThrow.play();
 }
 
-// move player up/down the bars
+// move player up/down the bars and snap them back into bounds
 function movePlayer(e){
-    if(e.key == "w"){
-        move.play();
-        player.y -= 100;
-        player.x = 660;
-    }
-    if(e.key == "s"){
-        move.play();
-        player.y += 100;
-        player.x = 660
-    }
-    if (e.key == "a"){
-        player.move();
+    switch(e.key){
+        case "w":
+            move.play();
+            player.y -= 100;
+            player.x = 660;
+            break;
+
+        case "s":
+            move.play();
+            player.y += 100;
+            player.x = 660
+            break;
+    
+        case "a":
+            player.move();
+            break;
+        
+        default:
+            break;
     }
 
     if (player.y > 470){

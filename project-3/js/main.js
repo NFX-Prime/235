@@ -4,39 +4,44 @@ const app = new PIXI.Application();
 let stage;
 let assets;
 
-let startScene;
+// sound variables
+let miss, patronHit, sodaThrow, patronReach, lose, move, theme, money; 
+
+// game over scene variables
+let gameOverScene, playAgain, finalScore, gameOverText, wallDecorGameOver, floorDecorGameOver, sodaTippedGameOver;
+
+// game scene variables
+let wallDecorGame, footballFieldGame, floorDecorGame, scoreIndicator, livesIndicator, moneyDecor;
 let gameScene, waiter, patron, soda, bigSoda, barStools, sodaCan, sodaTipped, wall, floor, field;
 
-// sound variables
-let miss, patronHit, sodaThrow, patronReach, start, lose, move; 
-let gameOverScene;
-let player;
-let playAgain, finalScore, gameOverText;
-let wallDecorGame, footballFieldGame, floorDecorGame;
-let wallDecorTitle, floorDecorTitle;
-let wallDecorGameOver, floorDecorGameOver, sodaTippedGameOver;
-let playIndicator, title, tutorialMessage, tip
-let scoreIndicator;
-let livesIndicator;
+// start scene variables
+let startScene, wallDecorTitle, floorDecorTitle, playIndicator, title, tutorialMessage, tip;
 
+// scene alignment variables
 let sceneHeight;
 let sceneWidth;
+
 // arrays for gameplay/decorations
 let sodas = [];
 let patrons = [];
 let bars = [];
+let moneys = [];
 let bar;
-let newPatron
+
+
+// game loop variables
+let newPatron, newMoney;
 let score = 0;
 let lives = 5;
 let scale = 0;
 let paused = true;
 let timer = 0;
-
-let playerPos;
+let player, playerPos;
+let randVal = Math.floor(Math.random()*10);
 
 loadImages()
 async function loadImages(){
+    // creation of all sprites
     PIXI.Assets.addBundle("sprites", {
         waiter: "images/waiter.png",
         soda: "images/soda.png",
@@ -47,15 +52,19 @@ async function loadImages(){
         wall: "images/wall.png",
         floor: "images/floor.png",
         sodaTipped: "images/sodaTipped.png",
+        moneyDecor:"images/money.png",
       });
 
+    // loading sprites
       assets = await PIXI.Assets.loadBundle("sprites", (progress) => {
         console.log(`progress=${(progress * 100).toFixed(2)}%`); // 0.4288 => 42.88%
       });
       setup();
 }
+
 async function setup(){
 
+    // creation of PIXI canvas
     await app.init({ width: 700, height: 700, background: "#4694e8"});
     app.ticker.add(gameLoop);
 
@@ -72,7 +81,6 @@ async function setup(){
     startScene = new PIXI.Container();
     stage.addChild(startScene);
 
-
     gameScene = new PIXI.Container();
     gameScene.visible = false;
     stage.addChild(gameScene);
@@ -81,12 +89,7 @@ async function setup(){
     gameOverScene.visible = false;
     stage.addChild(gameOverScene);
 
-    // sounds (to be loaded)
-
-    start = new Howl({
-        src: ["sounds/start.mp3"],
-    });
-
+    // sounds loaded
     miss = new Howl({
         src: ["sounds/miss.mp3"],
     });
@@ -111,14 +114,22 @@ async function setup(){
         src:["sounds/move.mp3"],
     })
 
-    createAllLabels();
+    theme = new Howl({
+        src:["sounds/theme.mp3"],
+    })
 
+    money = new Howl({
+        src:["sounds/money.mp3"],
+    })
+    createAllLabels();
 }
 
 function createAllLabels(){
     lives = 5;
     score = 0;
 
+    // adding decorations to every different scene first so they don't overlap
+    // important gameplay information
     wallDecorTitle = new Decoration(assets.wall, 350,50)
     floorDecorTitle = new Decoration(assets.floor, 350, 450);
     startScene.addChild(wallDecorTitle);
@@ -126,8 +137,24 @@ function createAllLabels(){
 
     wallDecorGameOver = new Decoration(assets.wall, 350,50)
     floorDecorGameOver = new Decoration(assets.floor, 350, 450);
+    sodaTippedGameOver = new Decoration(assets.sodaTipped, sceneWidth/2, sceneHeight/2);
     gameOverScene.addChild(wallDecorGameOver);
-    gameOverScene.addChild(floorDecorGameOver);   
+    gameOverScene.addChild(floorDecorGameOver);
+    gameOverScene.addChild(sodaTippedGameOver);
+
+    wallDecorGame = new Decoration(assets.wall, 350,50)
+    footballFieldGame = new Decoration(assets.field, 550, 50);
+    floorDecorGame = new Decoration(assets.floor, 350, 450);
+    gameScene.addChild(floorDecorGame);
+    gameScene.addChild(wallDecorGame);
+    gameScene.addChild(footballFieldGame);
+
+    // loop for less redundant code
+    for(let i = 0; i<4; i++){
+        bar = new Decoration(assets.barStools, 320, 200 + (100*i));
+        bars.push(bar);
+        gameScene.addChild(bars[i]);
+    }
 
     // Starting Scene additions
     title = new PIXI.Text("Soda Popper!", {
@@ -151,24 +178,25 @@ function createAllLabels(){
         stroke: 0xffffff,
         strokeThickness: 3, 
     });
-    playIndicator.y = 580;
+    playIndicator.y = 600;
     playIndicator.x = 80;
 
     startScene.addChild(playIndicator);
 
-    tutorialMessage = new PIXI.Text("How To Play: Use M1 to slide sodas to patrons,\n\t\t\t\t\t\t\t\t\t\t\t\t\tany key to move down the bars", {
+    tutorialMessage = new PIXI.Text("\t\t\t\t\t\t\t\tHow To Play: Use M1 to slide sodas to patrons,\nW/S to move up/down the bars and a to go through them", {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
         stroke: 0xffffff,
         strokeThickness: 3, 
     });
-    tutorialMessage.x = 70;
+    tutorialMessage.x = 40;
     tutorialMessage.y = 130;
 
     startScene.addChild(tutorialMessage);
     
-    tip = new PIXI.Text("Tip: Don't serve too many cans, you'll lose lives!", {
+    tip = new PIXI.Text("Tip: Don't serve too many cans, you'll lose lives!\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCollect cash for more score!"
+        , {
         fill: "#fc9003",
         fontSize: 25,
         fontFamily: "Arial",
@@ -180,25 +208,12 @@ function createAllLabels(){
 
     startScene.addChild(tip);
 
-    wallDecorGame = new Decoration(assets.wall, 350,50)
-    footballFieldGame = new Decoration(assets.field, 550, 50);
-    floorDecorGame = new Decoration(assets.floor, 350, 450);
-    gameScene.addChild(floorDecorGame);
-    gameScene.addChild(wallDecorGame);
-    gameScene.addChild(footballFieldGame);
-
+    // creation of player for game scene and other game scene text
     player = new Waiter(assets.waiter);
     gameScene.addChild(player);
     player.x = 660;
     player.y = 170;
     
-
-    for(let i = 0; i<4; i++){
-        bar = new Decoration(assets.barStools, 320, 200 + (100*i));
-        bars.push(bar);
-        gameScene.addChild(bars[i]);
-    }
-
     scoreIndicator = new PIXI.Text(`Score: ${score}` ,{
         fill: "#fc9003",
         fontSize: 30,
@@ -222,6 +237,7 @@ function createAllLabels(){
 
     gameScene.addChild(livesIndicator);
 
+    // game over scene text additions
     gameOverText = new PIXI.Text(`Game Over!`, {
         fill: "#fc9003",
         fontSize: 96,
@@ -254,11 +270,10 @@ function createAllLabels(){
     playAgain.y = 560;
     playAgain.x = 70;
 
-    sodaTippedGameOver = new Decoration(assets.sodaTipped, sceneWidth/2, sceneHeight/2);
-    gameOverScene.addChild(sodaTippedGameOver);
-
+    // function for initializing gameplay
     app.view.onclick = function(e){
-        start.play();
+        move.play();
+        theme.play();
         startScene.visible = false;
         gameScene.visible = true;
         paused = false;
@@ -267,28 +282,39 @@ function createAllLabels(){
 }
 
 function gameLoop(){
+    // don't tick if paused
     if(paused){
         return;
     }
+    // variable for spawning patrons
     timer += 1;
 
+    // fps
     let dt = 1 / app.ticker.FPS;
     if (dt > 1 / 12) dt = 1 / 12;
 
+    // setting events
     app.view.onclick = launchSoda;
-    window.onkeydown = movePlayer;
+    window.addEventListener("keydown", movePlayer);
     
+    // moves sodas / patrons
     for (let s of sodas) {
         s.move(dt);
-      }
-
+    }
 
     for (let p of patrons){
         p.move(dt);
     }
 
+    if(player.x < 640){
+        app.view.onclick = null;
+    }
+
+    // collision handling
     for (let p of patrons){
-        if (p.x >= player.x){
+
+        // patrons pass the player
+        if (p.x >= 610){
             patrons.forEach((b) => gameScene.removeChild(b));
             patrons = [];
             scale = 0;
@@ -296,6 +322,8 @@ function gameLoop(){
             patronReach.play();
             decreaseLifeBy(1);
         }
+
+        // sodas hitting / missing 
         for (let s of sodas){
             if (s.x < 10){
                 gameScene.removeChild(s);
@@ -304,19 +332,39 @@ function gameLoop(){
                 decreaseLifeBy(1);
             }
             if (rectsIntersect(p,s)){
+                if(getRandomInt(0,10) <= 2){
+                    newMoney = new Money(assets.moneyDecor, p.x, p.y+40);
+                    moneys.push(newMoney);
+                    gameScene.addChild(newMoney);
+                }
+
                 gameScene.removeChild(s);
                 gameScene.removeChild(p);
                 s.isAlive = false;
                 p.isAlive = false;
+
                 patronHit.play();
                 increaseScoreBy(30);
+
             }
+            // filtering out useless variables 
             sodas = sodas.filter((s) => s.isAlive);
             patrons = patrons.filter((p) => p.isAlive);
         }
     }
-    if (patrons.length <= 0 || timer % 800 == 0){
 
+    for(let m of moneys){
+        if(rectsIntersect(player, m)){
+            money.play();
+            m.isAlive = false
+            gameScene.removeChild(m);
+            increaseScoreBy(50)
+        }
+        moneys = moneys.filter((m) => m.isAlive);
+    }
+
+    // respawning patrons
+    if (patrons.length <= 0 || timer % 800 == 0){
         for(let i=0;i<4;i++){
             timer = 0;
             newPatron = new Patron(assets.patron, 100, 123);
@@ -326,6 +374,7 @@ function gameLoop(){
         }
     }
 
+    // losing if you have no lives left
     if(lives <= 0){
         paused = true;
         gameScene.visible = false;
@@ -336,45 +385,67 @@ function gameLoop(){
 
 }
 
+// throwing a soda from the player's position
 function launchSoda(){
     let thrownSoda = new Soda(assets.soda, player.x, player.y-20);
     sodas.push(thrownSoda);
     gameScene.addChild(thrownSoda);
     sodaThrow.play();
 }
+
+// move player up/down the bars
 function movePlayer(e){
-    player.y += 100;
-    move.play();
+    if(e.key == "w"){
+        move.play();
+        player.y -= 100;
+        player.x = 660;
+    }
+    if(e.key == "s"){
+        move.play();
+        player.y += 100;
+        player.x = 660
+    }
+    if (e.key == "a"){
+        player.move();
+    }
+
     if (player.y > 470){
         player.y= 170;
     }
-}
+    if (player.y <170){
+        player.y = 470;
+    }
 
+    if (player.x < 30){
+        player.x = 660;
+    }
+}
+// increase score when patron is hit
 function increaseScoreBy(inc){
     score += inc;
     scoreIndicator.text = `Score: ${score}`;
 }
 
+// decrease life when hit/miss can
 function decreaseLifeBy(dec){
     lives -= dec;
     livesIndicator.text = `Lives: ${lives}`;
 }
 
-// function TBM, object w/ time passed to limit number of cans thrown
-function refill(){
-
-}
-
+// end function when you lose and want to restart
 function end(){
+    theme.stop();
     lose.play();
     paused = true;
 
+    // resetting values + adding final score display
     window.onkeydown = null;
     app.view.onclick = null;
     lives = 5;
     scale = 0;
     finalScore.text = `Final Score: ${score}`;
 
+    // clearing all arrays for re-instantiation
     sodas.forEach((c) => gameScene.removeChild(c));
     sodas = [];
 
@@ -386,17 +457,26 @@ function end(){
 
     gameScene.visible = false;
     gameOverScene.visible = true;
+
+    // reassigning function to switch game states
     app.view.onclick = function(e){
         gameOverScene.visible = false;
         startScene.visible = true;
         finalScore.text = "";
+        move.play();
         createAllLabels();
     }
 }
-// helper method
 
+// helper method for collision
 function rectsIntersect(a,b){
     var ab = a.getBounds();
     var bb = b.getBounds();
     return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
 }
+ // helper method for getting random number
+function getRandomInt(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+  }

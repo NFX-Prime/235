@@ -5,10 +5,11 @@ let stage;
 let assets;
 
 let startScene;
-let gameScene, waiter, patron, soda, bigSoda, barStools, sodaCan, sodaTipped, wall, floor, field, miss, patronHit, patronReach, start;
-let bar1, bar2, bar3, bar4;
+let gameScene, waiter, patron, soda, bigSoda, barStools, sodaCan, sodaTipped, wall, floor, field;
+
+// sound variables
+let miss, patronHit, sodaThrow, patronReach, start, lose, move; 
 let gameOverScene;
-let tutorialScene;
 let player;
 let playAgain, finalScore, gameOverText;
 let wallDecorGame, footballFieldGame, floorDecorGame;
@@ -20,6 +21,7 @@ let livesIndicator;
 
 let sceneHeight;
 let sceneWidth;
+// arrays for gameplay/decorations
 let sodas = [];
 let patrons = [];
 let bars = [];
@@ -57,19 +59,18 @@ async function setup(){
     await app.init({ width: 700, height: 700, background: "#4694e8"});
     app.ticker.add(gameLoop);
 
+    // alignment of canvas
     document.body.appendChild(app.canvas);
     document.body.style.textAlign = "center";
 
+    // stage creation for different states
     stage = app.stage;
     sceneWidth = app.renderer.width;
     sceneHeight = app.renderer.height;
 
+    // creation of scenes for gameplay
     startScene = new PIXI.Container();
     stage.addChild(startScene);
-
-    tutorialScene = new PIXI.Container();
-    tutorialScene.visible = false;
-    stage.addChild(tutorialScene);
 
 
     gameScene = new PIXI.Container();
@@ -88,14 +89,26 @@ async function setup(){
 
     miss = new Howl({
         src: ["sounds/miss.mp3"],
-    })
+    });
 
     patronHit = new Howl({
         src: ["sounds/patronHit.mp3"],
-    })
+    });
 
     patronReach = new Howl({
         src: ["sounds/patronReach.mp3"],
+    });
+
+    sodaThrow = new Howl({
+        src:["sounds/sodaThrow.mp3"],
+    });
+
+    lose = new Howl({
+        src:["sounds/lose.mp3"],
+    })
+
+    move = new Howl({
+        src:["sounds/move.mp3"],
     })
 
     createAllLabels();
@@ -245,11 +258,12 @@ function createAllLabels(){
     gameOverScene.addChild(sodaTippedGameOver);
 
     app.view.onclick = function(e){
+        start.play();
         startScene.visible = false;
         gameScene.visible = true;
-        start.play();
         paused = false;
     };   
+    
 }
 
 function gameLoop(){
@@ -326,9 +340,11 @@ function launchSoda(){
     let thrownSoda = new Soda(assets.soda, player.x, player.y-20);
     sodas.push(thrownSoda);
     gameScene.addChild(thrownSoda);
+    sodaThrow.play();
 }
-function movePlayer(){
+function movePlayer(e){
     player.y += 100;
+    move.play();
     if (player.y > 470){
         player.y= 170;
     }
@@ -350,7 +366,7 @@ function refill(){
 }
 
 function end(){
-
+    lose.play();
     paused = true;
 
     window.onkeydown = null;
